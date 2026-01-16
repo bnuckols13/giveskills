@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBT Experiential Group: GIVE Skills</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-teal: #5EEAD4;
+            --deep-teal: #14B8A6;
+            --sage-green: #87A878;
+            --soft-purple: #C084FC;
+            --warm-rose: #FDA4AF;
+            --calm-blue: #93C5FD;
+            --midnight: #1E293B;
+            --slate: #475569;
+            --pearl: #F8FAFC;
+            --gradient-calm: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-nature: linear-gradient(135deg, #5EEAD4 0%, #93C5FD 100%);
+            --gradient-warm: linear-gradient(135deg, #FDA4AF 0%, #C084FC 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            min-height: 100vh;
+            color: var(--midnight);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating background elements */
+        .bg-circle {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-circle1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary-teal);
+            top: -100px;
+            right: -100px;
+        }
+
+        .bg-circle2 {
+            width: 400px;
+            height: 400px;
+            background: var(--soft-purple);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -5s;
+        }
+
+        .bg-circle3 {
+            width: 250px;
+            height: 250px;
+            background: var(--warm-rose);
+            top: 50%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: var(--gradient-calm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: var(--slate);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* Session Progress */
+        .session-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .progress-step::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 2px;
+            background: rgba(94, 234, 212, 0.3);
+        }
+
+        .progress-step:last-child::after {
+            display: none;
+        }
+
+        .progress-step.active {
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%);
+        }
+
+        .progress-step.completed {
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.2) 0%, rgba(147, 197, 253, 0.2) 100%);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-nature);
+            color: white;
+            border-radius: 50%;
+            line-height: 32px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-step.completed .step-number {
+            background: var(--deep-teal);
+        }
+
+        .step-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--midnight);
+        }
+
+        .step-time {
+            font-size: 0.75rem;
+            color: var(--slate);
+            margin-top: 0.25rem;
+        }
+
+        /* Phase Container */
+        .phase {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .phase.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-nature);
+        }
+
+        .card h2 {
+            color: var(--midnight);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        /* Check-in Prompts */
+        .prompt-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .prompt-card {
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .prompt-card:hover {
+            border-color: var(--primary-teal);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(94, 234, 212, 0.15);
+        }
+
+        .prompt-card.selected {
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.15) 0%, rgba(147, 197, 253, 0.15) 100%);
+            border-color: var(--deep-teal);
+        }
+
+        .prompt-card h3 {
+            color: var(--deep-teal);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .prompt-text {
+            color: var(--slate);
+            font-style: italic;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        /* Psychoeducation Screens */
+        .psych-ed-screen {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .psych-ed-screen.active {
+            display: block;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .screen-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .screen-header h2 {
+            font-size: 2rem;
+            color: var(--midnight);
+            margin-bottom: 0.5rem;
+        }
+
+        .screen-header p {
+            color: var(--slate);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Process Cards */
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .process-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary-teal);
+            transition: all 0.3s ease;
+        }
+
+        .process-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .process-card.awareness {
+            border-left-color: var(--primary-teal);
+        }
+
+        .process-card.openness {
+            border-left-color: var(--warm-rose);
+        }
+
+        .process-card.flexibility {
+            border-left-color: var(--calm-blue);
+        }
+
+        .process-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .process-tag.awareness {
+            background: rgba(94, 234, 212, 0.2);
+            color: var(--deep-teal);
+        }
+
+        .process-tag.openness {
+            background: rgba(253, 164, 175, 0.2);
+            color: #DC2626;
+        }
+
+        .process-tag.flexibility {
+            background: rgba(147, 197, 253, 0.2);
+            color: #1E40AF;
+        }
+
+        .process-card h3 {
+            color: var(--midnight);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .process-description {
+            color: var(--slate);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .process-mechanism {
+            background: rgba(94, 234, 212, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .process-mechanism strong {
+            color: var(--deep-teal);
+        }
+
+        /* Experiential Practice */
+        .practice-round {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .practice-round.active {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .round-header {
+            background: var(--gradient-nature);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .round-header h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .round-header p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .practice-instructions {
+            background: linear-gradient(135deg, rgba(253, 164, 175, 0.08) 0%, rgba(192, 132, 252, 0.08) 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .practice-instructions h4 {
+            color: var(--deep-teal);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .practice-instructions ol, .practice-instructions ul {
+            color: var(--slate);
+            line-height: 2;
+            padding-left: 1.5rem;
+        }
+
+        .timer-display {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--deep-teal);
+            margin: 2rem 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Reflection Area */
+        .reflection-area {
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+        }
+
+        .reflection-prompts {
+            margin-bottom: 2rem;
+        }
+
+        .reflection-prompts h4 {
+            color: var(--deep-teal);
+            margin-bottom: 1rem;
+        }
+
+        .reflection-prompts ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .reflection-prompts li {
+            color: var(--slate);
+            line-height: 2;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .reflection-prompts li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--primary-teal);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 2px solid rgba(94, 234, 212, 0.3);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.1);
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            background: var(--gradient-nature);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(94, 234, 212, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(94, 234, 212, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--deep-teal);
+            border: 2px solid var(--primary-teal);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(94, 234, 212, 0.1);
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: linear-gradient(135deg, rgba(147, 197, 253, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--calm-blue);
+        }
+
+        .info-box p {
+            color: var(--slate);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .info-box strong {
+            color: var(--midnight);
+        }
+
+        /* Integration Summary */
+        .integration-summary {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-top: 2rem;
+        }
+
+        .summary-item {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .summary-item h4 {
+            color: var(--deep-teal);
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-item p {
+            color: var(--slate);
+            line-height: 1.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 1rem; }
+            .card { padding: 1.5rem; }
+            .session-progress { flex-direction: column; }
+            .progress-step::after { display: none; }
+            .process-grid { grid-template-columns: 1fr; }
+            .prompt-selector { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="bg-circle bg-circle1"></div>
+    <div class="bg-circle bg-circle2"></div>
+    <div class="bg-circle bg-circle3"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>DBT Experiential Group</h1>
+            <p class="subtitle">GIVE Skills: Building Relational Psychological Flexibility</p>
+        </div>
+
+        <!-- Session Progress -->
+        <div class="session-progress">
+            <div class="progress-step active" onclick="goToPhase(0)">
+                <div class="step-number">1</div>
+                <div class="step-title">Check In</div>
+                <div class="step-time">10-12 min</div>
+            </div>
+            <div class="progress-step" onclick="goToPhase(1)">
+                <div class="step-number">2</div>
+                <div class="step-title">Psychoeducation</div>
+                <div class="step-time">12-15 min</div>
+            </div>
+            <div class="progress-step" onclick="goToPhase(2)">
+                <div class="step-number">3</div>
+                <div class="step-title">Practice</div>
+                <div class="step-time">45 min</div>
+            </div>
+            <div class="progress-step" onclick="goToPhase(3)">
+                <div class="step-number">4</div>
+                <div class="step-title">Integration</div>
+                <div class="step-time">15-18 min</div>
+            </div>
+        </div>
+
+        <!-- PHASE 1: CHECK IN -->
+        <div class="phase active" id="phase0">
+            <div class="card">
+                <h2>Check In: Authentic Presence</h2>
+                <p style="color: var(--slate); margin-bottom: 2rem; line-height: 1.7;">
+                    Select one prompt for the group. Everyone will use the same stem to share briefly (30-45 seconds each). 
+                    <strong>Pass is always available.</strong>
+                </p>
+
+                <div class="prompt-selector">
+                    <div class="prompt-card" onclick="selectPrompt(this, 0)">
+                        <h3>Presence-Based</h3>
+                        <p class="prompt-text">"Right now I'm noticing..."</p>
+                        <p style="color: var(--slate); font-size: 0.9rem; margin-top: 0.5rem;">
+                            (sensation, emotion, energy)
+                        </p>
+                    </div>
+
+                    <div class="prompt-card" onclick="selectPrompt(this, 1)">
+                        <h3>Honest Arrival</h3>
+                        <p class="prompt-text">"If I'm being honest about how I'm arriving..."</p>
+                        <p style="color: var(--slate); font-size: 0.9rem; margin-top: 0.5rem;">
+                            (your state as you enter this space)
+                        </p>
+                    </div>
+
+                    <div class="prompt-card" onclick="selectPrompt(this, 2)">
+                        <h3>Relational Curiosity</h3>
+                        <p class="prompt-text">"When I look at these faces, I'm curious about..."</p>
+                        <p style="color: var(--slate); font-size: 0.9rem; margin-top: 0.5rem;">
+                            (building connection)
+                        </p>
+                    </div>
+
+                    <div class="prompt-card" onclick="selectPrompt(this, 3)">
+                        <h3>Edge Work</h3>
+                        <p class="prompt-text">"What would be vulnerable to share is..."</p>
+                        <p style="color: var(--slate); font-size: 0.9rem; margin-top: 0.5rem;">
+                            (inviting deeper risk-taking)
+                        </p>
+                    </div>
+
+                    <div class="prompt-card" onclick="selectPrompt(this, 4)">
+                        <h3>Wanting & Needing</h3>
+                        <p class="prompt-text">"Something I'm wanting from this space today is..."</p>
+                        <p style="color: var(--slate); font-size: 0.9rem; margin-top: 0.5rem;">
+                            (naming what you need)
+                        </p>
+                    </div>
+
+                    <div class="prompt-card" onclick="selectPrompt(this, 5)">
+                        <h3>Unspoken Truth</h3>
+                        <p class="prompt-text">"Something I haven't said yet is..."</p>
+                        <p style="color: var(--slate); font-size: 0.9rem; margin-top: 0.5rem;">
+                            (what's trying to emerge)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Facilitation:</strong> Go around in gallery view order. Facilitator shares last to model depth. 
+                    Witness without cross-talk. Thank each person for their presence.</p>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="nextPhase()">Continue to Psychoeducation →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 2: PSYCHOEDUCATION -->
+        <div class="phase" id="phase1">
+            <!-- Screen 1: The Problem -->
+            <div class="psych-ed-screen active" id="screen1">
+                <div class="screen-header">
+                    <h2>The Rigidity Problem</h2>
+                    <p>Understanding what happens when relationships get stuck</p>
+                </div>
+
+                <div class="card">
+                    <h2>When Conflict Happens, We Get RIGID</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                        <div style="background: linear-gradient(135deg, rgba(253, 164, 175, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%); padding: 2rem; border-radius: 16px;">
+                            <h3 style="color: var(--midnight); margin-bottom: 1rem;">Common Reactions:</h3>
+                            <ul style="color: var(--slate); line-height: 2;">
+                                <li>Defend our position</li>
+                                <li>Attack or criticize</li>
+                                <li>Shut down or withdraw</li>
+                                <li>Pursue anxiously</li>
+                                <li>Go numb</li>
+                            </ul>
+                        </div>
+                        <div style="background: linear-gradient(135deg, rgba(147, 197, 253, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%); padding: 2rem; border-radius: 16px;">
+                            <h3 style="color: var(--midnight); margin-bottom: 1rem;">The Result:</h3>
+                            <ul style="color: var(--slate); line-height: 2;">
+                                <li>Stuck in patterns</li>
+                                <li>Can't adapt or respond</li>
+                                <li>Lose contact with what matters</li>
+                                <li>Disconnect from ourselves and others</li>
+                                <li>Experiential avoidance</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="info-box" style="margin-top: 2rem;">
+                        <p><strong>Ask the group:</strong> "When's a time you got stuck in a relationship pattern? What happened in your body?"</p>
+                        <p style="margin-top: 0.5rem;">Let 2-3 people respond briefly</p>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="nextScreen()">Continue: The Solution →</button>
+                </div>
+            </div>
+
+            <!-- Screen 2: GIVE Skills Overview -->
+            <div class="psych-ed-screen" id="screen2">
+                <div class="screen-header">
+                    <h2>GIVE Skills Create Flexibility</h2>
+                    <p>Not just "being nice" - engaging psychological processes that prevent rigidity</p>
+                </div>
+
+                <div class="card">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">GIVE = Building Relational Psychological Flexibility</h2>
+                    
+                    <div class="process-grid">
+                        <div class="process-card openness">
+                            <span class="process-tag openness">Openness Process</span>
+                            <h3>G - GENTLE</h3>
+                            <p class="process-description">
+                                Creates safety for difficult content to be present without triggering shutdown
+                            </p>
+                            <div class="process-mechanism">
+                                <strong>Mechanism:</strong> Signals "this is safe" → both people can stay out of fight/flight → openness instead of defensiveness
+                            </div>
+                        </div>
+
+                        <div class="process-card awareness">
+                            <span class="process-tag awareness">Awareness Process</span>
+                            <h3>I - INTERESTED</h3>
+                            <p class="process-description">
+                                Tracks the other person's experience in real-time, moment-to-moment
+                            </p>
+                            <div class="process-mechanism">
+                                <strong>Mechanism:</strong> Present-moment tracking of their ACTUAL experiencing → not reacting to assumptions → contact with reality as it unfolds
+                            </div>
+                        </div>
+
+                        <div class="process-card openness">
+                            <span class="process-tag openness">Openness Process</span>
+                            <h3>V - VALIDATE</h3>
+                            <p class="process-description">
+                                Accepts their experience without needing it to change
+                            </p>
+                            <div class="process-mechanism">
+                                <strong>Mechanism:</strong> "That makes sense" = radical acceptance → teaches them they don't have to hide parts of themselves → prevents experiential avoidance
+                            </div>
+                        </div>
+
+                        <div class="process-card flexibility">
+                            <span class="process-tag flexibility">Flexibility Process</span>
+                            <h3>E - EASY MANNER</h3>
+                            <p class="process-description">
+                                Prevents getting fused/stuck in seriousness and intensity
+                            </p>
+                            <div class="process-mechanism">
+                                <strong>Mechanism:</strong> Lightness creates defusion → space from the content → maintains adaptive response range → flexibility instead of rigidity
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box" style="margin-top: 2rem; border-left-color: var(--deep-teal);">
+                        <p><strong>The Teaching:</strong> "So we're not just learning 'be nice' - we're learning how to stay psychologically flexible when your nervous system wants to go rigid. These skills engage the core mechanisms that create change: staying aware, staying open, and maintaining flexibility even when it's uncomfortable."</p>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="previousScreen()">← Back</button>
+                    <button class="btn" onclick="nextScreen()">Continue: The Details →</button>
+                </div>
+            </div>
+
+            <!-- Screen 3: Deep Dive -->
+            <div class="psych-ed-screen" id="screen3">
+                <div class="screen-header">
+                    <h2>How GIVE Skills Work in Your Nervous System</h2>
+                    <p>Understanding the mechanisms underneath the behaviors</p>
+                </div>
+
+                <div class="card">
+                    <div style="background: linear-gradient(135deg, rgba(253, 164, 175, 0.08) 0%, rgba(192, 132, 252, 0.08) 100%); padding: 2rem; border-radius: 16px; margin-bottom: 2rem;">
+                        <h3 style="color: var(--deep-teal); margin-bottom: 1rem;">When you're GENTLE:</h3>
+                        <p style="color: var(--slate); line-height: 1.8;">
+                            You're signaling "this is safe" - which means both of you can stay out of fight/flight. 
+                            That's the <strong>openness process</strong> - you're creating space where difficult stuff can be present 
+                            without triggering shutdown. Without gentleness → threat activation → experiential avoidance (shut down, attack, flee). 
+                            With gentleness → safety → willingness to stay present with difficult content.
+                        </p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(94, 234, 212, 0.08) 0%, rgba(147, 197, 253, 0.08) 100%); padding: 2rem; border-radius: 16px; margin-bottom: 2rem;">
+                        <h3 style="color: var(--deep-teal); margin-bottom: 1rem;">When you're INTERESTED:</h3>
+                        <p style="color: var(--slate); line-height: 1.8;">
+                            You're tracking what's actually happening for them moment-to-moment. Not what you assume, not what you 
+                            want them to feel - what IS. That's the <strong>awareness process</strong> - staying in contact with reality 
+                            as it unfolds. You're noticing: Are they constricted? Open? Defensive? Softening? This prevents you from 
+                            relating to a concept of the person and keeps you relating to their actual experiencing.
+                        </p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(253, 164, 175, 0.08) 0%, rgba(192, 132, 252, 0.08) 100%); padding: 2rem; border-radius: 16px; margin-bottom: 2rem;">
+                        <h3 style="color: var(--deep-teal); margin-bottom: 1rem;">When you VALIDATE:</h3>
+                        <p style="color: var(--slate); line-height: 1.8;">
+                            You're showing that their experience doesn't need to be different for connection to happen. 
+                            That's <strong>radical acceptance</strong> - the opposite of experiential avoidance. "That makes sense" = 
+                            "Your experience doesn't need to change for us to proceed." You're teaching them: "You don't have to hide 
+                            parts of yourself to be here with me." This directly counters the "you shouldn't feel that way" response 
+                            that creates shutdown.
+                        </p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(147, 197, 253, 0.08) 0%, rgba(192, 132, 252, 0.08) 100%); padding: 2rem; border-radius: 16px;">
+                        <h3 style="color: var(--deep-teal); margin-bottom: 1rem;">When you have EASY MANNER:</h3>
+                        <p style="color: var(--slate); line-height: 1.8;">
+                            You're preventing fusion - that thing where you get so stuck in the content that you lose flexibility. 
+                            When things get too intense/serious → fusion with content → rigidity. Lightness/humor creates 
+                            <strong>defusion</strong> - a little space from the intensity so you can respond adaptively. Easy manner 
+                            signals: "We can hold this lightly rather than grip it tightly." This maintains your adaptive response range.
+                        </p>
+                    </div>
+
+                    <div class="info-box" style="margin-top: 2rem; border-left-color: var(--soft-purple);">
+                        <p><strong>The Bridge:</strong> "Ready to feel what this is like in your body? We're going to practice these as lived experiences, not just concepts."</p>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="previousScreen()">← Back</button>
+                    <button class="btn" onclick="nextPhase()">Begin Practice →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 3: EXPERIENTIAL PRACTICE -->
+        <div class="phase" id="phase2">
+            <!-- Round 1: Embodied Noticing -->
+            <div class="practice-round active" id="round1">
+                <div class="round-header">
+                    <h3>Round 1: Embodied Noticing</h3>
+                    <p>Feeling GIVE skills in your body</p>
+                </div>
+
+                <div class="practice-instructions">
+                    <h4>Guided Exploration (10 minutes)</h4>
+                    <p style="color: var(--slate); line-height: 1.7; margin-bottom: 1.5rem;">
+                        The facilitator will guide you through a body-based exploration of what these skills feel like 
+                        physically. Everyone stays together, cameras optional.
+                    </p>
+
+                    <ol style="color: var(--slate); line-height: 1.8;">
+                        <li><strong>GENTLE:</strong> Think of a time someone was harsh with you. Notice what happens in your body 
+                        (tightness? heat? contraction?). Now think of a time someone was gentle. Notice what shifts. Where do you 
+                        feel "gentle" in your body? Your chest? Face? Shoulders? What happens to your breath?</li>
+                        
+                        <li><strong>INTERESTED:</strong> Remember a conversation where someone wasn't really listening - they were 
+                        waiting to talk. Notice that feeling. Now remember when someone was genuinely curious about you. What's 
+                        different? What does "being interesting" feel like to receive?</li>
+                        
+                        <li><strong>VALIDATE:</strong> Think of a time someone said "you shouldn't feel that way." Notice the impact. 
+                        Now think of someone saying "that makes complete sense." Feel the difference. Where does validation land in your body?</li>
+                        
+                        <li><strong>EASY MANNER:</strong> Embody rigid seriousness - tense your jaw, furrow your brow, grip your hands. 
+                        Hold it. Now release and soften - uncross your arms, soften your face, breathe. Notice the shift in your nervous system.</li>
+                    </ol>
+                </div>
+
+                <div class="reflection-area">
+                    <h4>Brief Shares (5 minutes)</h4>
+                    <p style="color: var(--slate); margin-bottom: 1rem;">Popcorn style - whoever wants to speak:</p>
+                    <ul style="color: var(--slate); line-height: 1.8; list-style: none; padding-left: 0;">
+                        <li>◆ "What did you notice in your body?"</li>
+                        <li>◆ "What surprised you?"</li>
+                        <li>◆ "Which skill had the strongest physical sensation?"</li>
+                    </ul>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="nextRound()">Continue to Round 2 →</button>
+                </div>
+            </div>
+
+            <!-- Round 2: Creative Expression -->
+            <div class="practice-round" id="round2">
+                <div class="round-header">
+                    <h3>Round 2: Creative Expression</h3>
+                    <p>Making GIVE skills visible and tangible</p>
+                </div>
+
+                <div class="practice-instructions">
+                    <h4>Create Something (15 minutes)</h4>
+                    <p style="color: var(--slate); line-height: 1.7; margin-bottom: 1.5rem;">
+                        Grab something to write or draw with. Choose ONE of these prompts and spend 5 minutes creating. 
+                        This isn't about art quality - it's about externalizing your experience.
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div style="background: rgba(94, 234, 212, 0.1); padding: 1.5rem; border-radius: 12px;">
+                            <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">Option 1</h4>
+                            <p style="color: var(--slate); line-height: 1.6;">
+                                Draw/write what "validation" looks like or feels like
+                            </p>
+                        </div>
+                        <div style="background: rgba(253, 164, 175, 0.1); padding: 1.5rem; border-radius: 12px;">
+                            <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">Option 2</h4>
+                            <p style="color: var(--slate); line-height: 1.6;">
+                                Write the harshest thing your inner critic says, then write how you'd validate that part
+                            </p>
+                        </div>
+                        <div style="background: rgba(147, 197, 253, 0.1); padding: 1.5rem; border-radius: 12px;">
+                            <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">Option 3</h4>
+                            <p style="color: var(--slate); line-height: 1.6;">
+                                Use objects around you to create a little scene of "easy manner" vs. "rigidity"
+                            </p>
+                        </div>
+                        <div style="background: rgba(192, 132, 252, 0.1); padding: 1.5rem; border-radius: 12px;">
+                            <h4 style="color: var(--deep-teal); margin-bottom: 0.75rem;">Option 4</h4>
+                            <p style="color: var(--slate); line-height: 1.6;">
+                                Draw the difference between "interested" and "checked out" using colors/shapes
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timer-display" id="timer2">5:00</div>
+
+                <div class="reflection-area">
+                    <h4>Show & Tell (10 minutes)</h4>
+                    <p style="color: var(--slate); margin-bottom: 1rem;">
+                        Who wants to show us what you made? Hold it up to camera and tell us about it (30 seconds each). 
+                        Group witnesses without feedback unless asked.
+                    </p>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="startTimer(2, 5)">Start 5-Minute Timer</button>
+                    <button class="btn" onclick="nextRound()">Continue to Round 3 →</button>
+                </div>
+            </div>
+
+            <!-- Round 3: Live Practice -->
+            <div class="practice-round" id="round3">
+                <div class="round-header">
+                    <h3>Round 3: Live Practice</h3>
+                    <p>Practicing GIVE skills in real-time together</p>
+                </div>
+
+                <div class="practice-instructions">
+                    <h4>Group Practice (20 minutes)</h4>
+                    <p style="color: var(--slate); line-height: 1.7; margin-bottom: 1.5rem;">
+                        We'll practice these skills together through live demonstration and group participation. 
+                        Facilitator demonstrates first, then volunteers practice.
+                    </p>
+
+                    <div style="background: linear-gradient(135deg, rgba(94, 234, 212, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%); padding: 2rem; border-radius: 16px; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 1rem;">INTERESTED Practice</h4>
+                        <ol style="color: var(--slate); line-height: 1.8;">
+                            <li><strong>Facilitator demonstrates:</strong> "I'm going to share something for 60 seconds. Your job is 
+                            to show me you're interested through your face, body, and energy - even though we're on screens. Ready?"</li>
+                            <li><strong>Group observes:</strong> What did you notice the facilitator doing to show interest?</li>
+                            <li><strong>Volunteers practice:</strong> 2-3 people volunteer to share something for 60 seconds each. 
+                            Everyone else practices showing interest.</li>
+                            <li><strong>Debrief:</strong> Sharers - what did you notice when people were present? Listeners - what was hard? 
+                            What felt natural?</li>
+                        </ol>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(253, 164, 175, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%); padding: 2rem; border-radius: 16px;">
+                        <h4 style="color: var(--deep-teal); margin-bottom: 1rem;">VALIDATE Practice</h4>
+                        <ol style="color: var(--slate); line-height: 1.8;">
+                            <li><strong>Setup:</strong> Facilitator asks for a volunteer to share a frustration (mild, not traumatic)</li>
+                            <li><strong>Group practices:</strong> Everyone unmutes and practices validation responses:
+                                <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                                    <li>"That makes complete sense because..."</li>
+                                    <li>"I can see why you'd feel..."</li>
+                                    <li>"Of course you'd react that way..."</li>
+                                </ul>
+                            </li>
+                            <li><strong>Notice:</strong> Sharer - what did validation feel like to receive? Group - where was it hard 
+                            to validate instead of fix/advise?</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="reflection-area">
+                    <h4>Integration Questions</h4>
+                    <ul style="color: var(--slate); line-height: 2; list-style: none; padding: 0;">
+                        <li>◆ What did you notice in YOUR body when you were really present vs. checked out?</li>
+                        <li>◆ Which skill felt most natural? Which was hardest?</li>
+                        <li>◆ What surprised you about practicing on Zoom vs. in-person?</li>
+                    </ul>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="nextPhase()">Move to Integration →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 4: INTEGRATION -->
+        <div class="phase" id="phase3">
+            <div class="card">
+                <h2>Integration: Taking It Into Your Life</h2>
+                
+                <!-- Silent Reflection -->
+                <div class="reflection-area">
+                    <h4>Silent Reflection (5 minutes)</h4>
+                    <div class="reflection-prompts">
+                        <p style="color: var(--slate); margin-bottom: 1.5rem;">
+                            Take 5 minutes to journal or sit with these questions. Cameras optional, everyone on mute.
+                        </p>
+                        <ul>
+                            <li>What did I notice in my body during these practices?</li>
+                            <li>What surprised me?</li>
+                            <li>Where's one place this week I could experiment with GIVE skills?</li>
+                            <li>What do I need to remember?</li>
+                        </ul>
+                    </div>
+                    <textarea id="personalReflection" placeholder="Your private reflections..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="startTimer(4, 5)">Start 5-Minute Timer</button>
+                </div>
+            </div>
+
+            <!-- Commitment Round -->
+            <div class="card">
+                <h2>Commitment Round</h2>
+                <p style="color: var(--slate); margin-bottom: 2rem; line-height: 1.7;">
+                    Go around the gallery view. Each person completes ONE of these sentence stems:
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div style="background: linear-gradient(135deg, rgba(94, 234, 212, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%); padding: 1.5rem; border-radius: 16px;">
+                        <p style="color: var(--slate); font-size: 1.1rem; font-style: italic;">
+                            "One way I could practice this week is..."
+                        </p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(253, 164, 175, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%); padding: 1.5rem; border-radius: 16px;">
+                        <p style="color: var(--slate); font-size: 1.1rem; font-style: italic;">
+                            "What I'm taking from today is..."
+                        </p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(147, 197, 253, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%); padding: 1.5rem; border-radius: 16px;">
+                        <p style="color: var(--slate); font-size: 1.1rem; font-style: italic;">
+                            "What would support me in practicing this is..."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Facilitator offers:</strong> "I'll put a screenshot of the GIVE process screen in the chat so you can 
+                    reference it this week. If anyone wants to exchange numbers for buddy accountability, you're welcome to do that."</p>
+                </div>
+            </div>
+
+            <!-- Closing -->
+            <div class="card">
+                <h2>Closing</h2>
+                <div style="text-align: center; padding: 2rem;">
+                    <p style="color: var(--slate); font-size: 1.2rem; line-height: 2; margin-bottom: 2rem;">
+                        Let's take three breaths together...
+                    </p>
+                    <div style="background: var(--gradient-nature); color: white; padding: 2rem; border-radius: 16px; margin: 2rem auto; max-width: 600px;">
+                        <p style="font-size: 1.3rem; margin-bottom: 1rem;">Thank you for your presence.</p>
+                        <p style="font-size: 1.1rem; opacity: 0.95;">See you next week.</p>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn" onclick="showSummary()">View Session Summary</button>
+                </div>
+            </div>
+
+            <!-- Session Summary -->
+            <div class="integration-summary" id="sessionSummary" style="display: none;">
+                <h2 style="text-align: center; margin-bottom: 2rem;">Session Summary: GIVE Skills</h2>
+                
+                <div class="summary-item">
+                    <h4>What We Learned</h4>
+                    <p>GIVE skills build relational psychological flexibility by engaging core change mechanisms: staying aware 
+                    of what's happening (INTERESTED), staying open to difficult content (GENTLE, VALIDATE), and maintaining 
+                    flexibility (EASY MANNER). These aren't just "nice behaviors" - they're processes that prevent rigidity in relationships.</p>
+                </div>
+
+                <div class="summary-item">
+                    <h4>What We Practiced</h4>
+                    <p>We explored GIVE skills through three experiential rounds: embodied noticing (feeling the skills in our bodies), 
+                    creative expression (making them visible), and live practice (using them in real-time). Each round built on the last, 
+                    moving from internal awareness to external action.</p>
+                </div>
+
+                <div class="summary-item">
+                    <h4>The Mechanisms</h4>
+                    <ul style="color: var(--slate); line-height: 1.8; margin-top: 0.5rem;">
+                        <li><strong>GENTLE</strong> creates openness by signaling safety → prevents defensive shutdown</li>
+                        <li><strong>INTERESTED</strong> maintains awareness by tracking real-time experiencing → prevents reacting to assumptions</li>
+                        <li><strong>VALIDATE</strong> enables openness by accepting without requiring change → prevents experiential avoidance</li>
+                        <li><strong>EASY MANNER</strong> maintains flexibility by preventing fusion → preserves adaptive responding</li>
+                    </ul>
+                </div>
+
+                <div class="summary-item">
+                    <h4>Practice This Week</h4>
+                    <p>Notice one relationship interaction where you could experiment with GIVE skills. Don't aim for perfection - 
+                    aim for awareness. What happens in your body when you practice gentleness? When you really track someone's experience? 
+                    When you validate without fixing? Bring your observations to next week's group.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPhase = 0;
+        let currentScreen = 1;
+        let currentRound = 1;
+        let selectedPrompt = null;
+        let timerInterval = null;
+
+        function goToPhase(phaseIndex) {
+            // Update phases
+            const phases = document.querySelectorAll('.phase');
+            phases.forEach((phase, index) => {
+                phase.classList.toggle('active', index === phaseIndex);
+            });
+
+            // Update progress steps
+            const steps = document.querySelectorAll('.progress-step');
+            steps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index < phaseIndex) {
+                    step.classList.add('completed');
+                } else if (index === phaseIndex) {
+                    step.classList.add('active');
+                }
+            });
+
+            currentPhase = phaseIndex;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextPhase() {
+            if (currentPhase < 3) {
+                goToPhase(currentPhase + 1);
+            }
+        }
+
+        function selectPrompt(element, promptIndex) {
+            // Remove selected from all prompts
+            document.querySelectorAll('.prompt-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected to clicked prompt
+            element.classList.add('selected');
+            selectedPrompt = promptIndex;
+        }
+
+        function nextScreen() {
+            const screens = document.querySelectorAll('.psych-ed-screen');
+            screens[currentScreen - 1].classList.remove('active');
+            screens[currentScreen].classList.add('active');
+            currentScreen++;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function previousScreen() {
+            const screens = document.querySelectorAll('.psych-ed-screen');
+            screens[currentScreen - 1].classList.remove('active');
+            screens[currentScreen - 2].classList.add('active');
+            currentScreen--;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextRound() {
+            const rounds = document.querySelectorAll('.practice-round');
+            rounds[currentRound - 1].classList.remove('active');
+            rounds[currentRound].classList.add('active');
+            currentRound++;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function startTimer(timerId, minutes) {
+            // Clear any existing timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+
+            let timeLeft = minutes * 60;
+            const timerDisplay = document.getElementById('timer' + timerId);
+            
+            function updateTimer() {
+                const mins = Math.floor(timeLeft / 60);
+                const secs = timeLeft % 60;
+                timerDisplay.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Time's up!";
+                }
+                timeLeft--;
+            }
+
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function showSummary() {
+            const summary = document.getElementById('sessionSummary');
+            summary.style.display = 'block';
+            summary.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Animations on load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.prompt-card').forEach((card, index) => {
+                card.style.animation = `fadeIn 0.6s ease ${index * 0.1}s both`;
+            });
+        });
+    </script>
+</body>
+</html>
